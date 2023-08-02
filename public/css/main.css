@@ -1,0 +1,10 @@
+body, html{
+    height: 100%;
+    margin:0;
+}
+
+.nombre-logo{
+    font-weight: 900;
+    font-size: 25px;
+    margin-bottom: 5px;
+}
