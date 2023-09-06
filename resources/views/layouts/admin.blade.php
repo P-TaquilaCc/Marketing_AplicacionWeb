@@ -44,10 +44,10 @@
                         <!-- menu profile quick info -->
                         <div class="profile clearfix">
                             <div class="profile_pic">
-                            @if(session('fotoPerfil') != null)
-                                <img src="{{ url('storage/uploads/userPerfil').'/'. session('fotoAdmin') }}" alt="..." class="img-circle profile_img">
+                            @if(session('fotoAdmin') != null)
+                                <img src="{{ asset('storage/images/userPerfil').'/'. session('fotoAdmin') }}" alt="Foto de Perfil" class="img-circle profile_img">
                             @else
-                                <img src="../../img/foto-perfil.png" alt="..." class="img-circle profile_img">
+                                <img src="{{ asset('img/foto-perfil.png') }}" alt="Foto de Perfil" class="img-circle profile_img">
                             @endif
                             </div>
                             <div class="profile_info">
@@ -93,9 +93,9 @@
                                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                                         @if(session('fotoAdmin') != null)
-                                            <img src="{{ url('storage/uploads/userPerfil').'/'. session('fotoAdmin') }}" alt="">{{session('nomAdmin')}}
+                                            <img src="{{ asset('storage/images/userPerfil'). '/'. session('fotoAdmin') }}" alt="Foto de perfil">{{session('nomAdmin')}}
                                         @else
-                                            <img src="../../img/foto-perfil.png" alt="">{{session('nomAdmin')}}
+                                            <img src="{{ asset('img/foto-perfil.png') }}" alt="Foto de Perfil">{{session('nomAdmin')}}
                                         @endif
                                     </a>
                                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
@@ -158,11 +158,11 @@
         </div>
 
         <!-- jQuery -->
-        <script src="../../js/jquery.min.js"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
         <!-- Bootstrap -->
-        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
         <!-- Custom Theme Scripts -->
-        <script src="../../js/custom.min.js"></script>
+        <script src="{{ asset('js/custom.min.js') }}"></script>
 
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 

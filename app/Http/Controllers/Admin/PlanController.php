@@ -12,7 +12,7 @@ class PlanController extends Controller
     public function list(){
 
         //Hace una consulta y llama a todos los registros que hay en la tabla PLAN
-        $planes = Plan::all();
+        $planes = Plan::orderBy('id', 'desc')->get();
 
         //Muestra los registros en la vista planes LIST
         return view('admin.planes.list', compact('planes'));
@@ -41,14 +41,18 @@ class PlanController extends Controller
         //Obtiene todos los campos ingresados en los inputs por el usuario Administrador
         $input = $request->all();
 
-        //Crea una nueva instancia de la entidad PLAN y agrega los valores ingresados en el input a sus atributos
         $plan = new Plan();
-
         $plan->nombre = $input['nombre'];
         $plan->precioMensual = $input['precioMensual'];
         $plan->porcentaje = $input['porcentaje'];
 
-        //Guarda la instancia en la BD
+        if (array_key_exists('porDefecto', $input)) {
+            $plan->porDefecto = $input['porDefecto'];
+            Plan::where('id', '!=', $plan->id)->update(['porDefecto' => 0]);
+        } else {
+            $plan->porDefecto = 0;
+        }
+
         $plan->save();
 
         //Muestra la vista Plan index con el mensaje de agregado
@@ -84,6 +88,10 @@ class PlanController extends Controller
         //Hace la consulta al a BD para obtener el registro a editar mediante el ID del PLAN
         $plan = Plan::findOrFail($request->id);
 
+        if (array_key_exists('porDefecto', $input)) {
+            $plan->porDefecto = $input['porDefecto'];
+            Plan::where('id', '!=', $plan->id)->update(['porDefecto' => 0]);
+        }
         //Actualiza la nueva instancia de la Entidad Plan con los nuevos datos ingresados en los inputs
         $plan->update($input);
 

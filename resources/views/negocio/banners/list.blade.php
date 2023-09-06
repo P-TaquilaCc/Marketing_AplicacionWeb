@@ -30,7 +30,7 @@
             @foreach ($banners as $banner)
                 <tr class="body-table">
                     <td>
-                        <img class="img-responsive" src="{{ url('storage/uploads/banners').'/'. $banner-> imagen }}" width="100" height="80" alt="Imagen Banner">
+                        <img class="img-responsive" src="{{ asset('storage/images/banners').'/'. $banner-> imagen }}" width="100" height="80" alt="Imagen Banner">
                     </td>
 
                     <td>

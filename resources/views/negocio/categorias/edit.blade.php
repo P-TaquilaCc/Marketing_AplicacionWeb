@@ -28,7 +28,7 @@
                     <div class="form-group col-md-4">
 
                         <label for="imagen" class="form-label" > Imagen</label>
-                        <img src="{{ url('storage/uploads/categoriaProducto').'/'. $data->imagen }}" alt="{{$data->nombre}}" width="150">
+                        <img src="{{ asset('storage/images/categoriaProducto').'/'. $data->imagen }}" alt="Categoria del producto" width="150">
                         <br>
                         <input type="file"  name="imagen" class="mt-2">
                         <br>

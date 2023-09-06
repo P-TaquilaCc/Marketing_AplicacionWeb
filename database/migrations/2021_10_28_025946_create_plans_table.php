@@ -18,6 +18,7 @@ class CreatePlansTable extends Migration
             $table->string('nombre',255);
             $table->double('precioMensual', 8,2);
             $table->integer('porcentaje');
+            $table->integer('porDefecto');
             $table->timestamps();
         });
     }

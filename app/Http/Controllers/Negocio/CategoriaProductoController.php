@@ -47,9 +47,9 @@ class CategoriaProductoController extends Controller
         //Verifica si se ha ingresado una imagen
         if($request->hasFile('imagen')){
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/categoriaProducto'), $filename);
-            $categoria_producto->imagen = $filename;
+            $file->store('public/images/categoriaProducto');
+            $hashNameImagen = $file->hashName();
+            $categoria_producto->imagen = $hashNameImagen;
         }
 
         $categoria_producto->estado = $input['estado'];
@@ -96,9 +96,9 @@ class CategoriaProductoController extends Controller
                 'imagen.mimes' => 'La imagen debe ser un archivo .png'
             ]);
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/categoriaProducto'), $filename);
-            $input["imagen"] = $filename;
+            $file->store('public/images/categoriaProducto');
+            $hashNameImagen = $file->hashName();
+            $input["imagen"] = $hashNameImagen;
         }
 
         //Actualiza la nueva instancia de la Entidad Categoría con los nuevos datos ingresados en los inputs

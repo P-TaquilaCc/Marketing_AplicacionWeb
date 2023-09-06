@@ -37,7 +37,7 @@
                 <tr class="body-table">
                     <td>{{ $categoria->nombre }}</td>
                     <td >
-                        <img class="img-responsive" src="{{ url('storage/uploads/categoriaProducto').'/'. $categoria->imagen }}" width="100" height="80" alt="Imagen Categoría">
+                        <img class="img-responsive" src="{{ asset('storage/images/categoriaProducto').'/'. $categoria->imagen }}" width="100" height="80" alt="Imagen Categoría">
                     </td>
                     <td>
                         @if ($categoria->estado == 1)

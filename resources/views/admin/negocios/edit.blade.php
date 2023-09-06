@@ -50,18 +50,14 @@
 
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input opcion" type="radio" name="tipo" id="radio-empresa" value="0"
-                                @php
-                                    if($data->tipo == 0){ echo "checked='checked'"; }
-                                @endphp
+                                {{ $data->tipo == 0 ? 'checked' : '' }}
                                 >
                                 <label class="form-check-label" for="radio-empresa">Empresa</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input opcion" type="radio" name="tipo" id="radio-emprendedor" value="1"
-                                @php
-                                    if($data->tipo == 1){ echo "checked='checked'"; }
-                                @endphp
+                                {{ $data->tipo == 1 ? 'checked' : '' }}
                                 >
                                 <label class="form-check-label" for="radio-emprendedor">Emprendedor</label>
                             </div>
@@ -171,7 +167,7 @@
                         <div class="form-group col-md-4">
 
                             <label for="imagen" class="form-label" > Imagen</label>
-                            <img src="{{ url('storage/uploads/negocio').'/'. $data->imagen }}" alt="{{$data->nombre}}" width="150">
+                            <img src="{{ asset('storage/images/negocio/'. $data->imagen) }}" alt="Imagen negocio" width="150">
                             <br>
                             <input type="file"  name="imagen" class="mt-2">
                             <br>
@@ -260,12 +256,12 @@
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'),{
                 zoom: 14,
-                center: new google.maps.LatLng(-18.007701, -70.247001),
+                center: new google.maps.LatLng(parseFloat($("#txtlatitud").val()), parseFloat($("#txtlongitud").val())),
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             });
 
             vMarker = new google.maps.Marker({
-                position: new google.maps.LatLng(-18.007701, -70.247001),
+                position: new google.maps.LatLng(parseFloat($("#txtlatitud").val()), parseFloat($("#txtlongitud").val())),
                 draggable: true
             });
 
@@ -282,16 +278,12 @@
 	</script>
     <script>
         $(document).ready(function () {
-            if( $('.opcion').is(':checked') ) {
-                if ($(this).val() === "0") {
-                    $("#RUC").removeAttr("disabled");
-                    $("#razonSocial").removeAttr("disabled");
-                } else {
-                    $("#RUC").attr("disabled", "disabled");
-                    $("#razonSocial").attr("disabled", "disabled");
-                }
+            if ($('#radio-emprendedor').is(':checked')) {
+                $("#RUC").attr("disabled", "disabled");
+                $("#razonSocial").attr("disabled", "disabled");
             }
         });
+
        $(function () {
         $(".opcion").click(function () {
           if ($(this).val() === "0") {
@@ -303,6 +295,7 @@
           }
         });
       });
+
     </script>
 
 @endsection

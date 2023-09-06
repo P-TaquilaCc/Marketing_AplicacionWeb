@@ -64,7 +64,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="imagen" class="form-label" > Imagen</label>
-                            <img src="{{ url('storage/uploads/productos').'/'. $data->imagen }}" alt="{{$data->nombre}}" width="150">
+                            <img src="{{ asset('storage/images/productos').'/'. $data->imagen }}" alt="Imagen del producto" width="150" class="d-block">
                             <input type="file"  name="imagen" class="mt-2">
                             <br>
                             @error('imagen')

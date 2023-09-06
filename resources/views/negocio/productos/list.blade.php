@@ -36,7 +36,7 @@
             @foreach ($productos as $producto)
                 <tr class="body-table">
                     <td>
-                        <img class="img-responsive" src="{{ url('storage/uploads/productos').'/'. $producto->imagen }}" width="100" height="80" alt="Imagen Producto">
+                        <img class="img-responsive" src="{{ asset('storage/images/productos').'/'. $producto->imagen }}" width="100" height="80" alt="Imagen Producto">
                     </td>
                     <td>{{ $producto->category->nombre}}</td>
                     <td>{{ $producto->nombre }}</td>

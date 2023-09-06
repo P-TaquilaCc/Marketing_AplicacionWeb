@@ -63,9 +63,9 @@ class ProductoController extends Controller
         //Verifica si se ha ingresado una imagen
         if($request->hasFile('imagen')){
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/productos'), $filename);
-            $producto->imagen = $filename;
+            $file->store('public/images/productos');
+            $hashNameImagen = $file->hashName();
+            $producto->imagen = $hashNameImagen;
         }
         $producto->estado = $input['estado'];
 
@@ -119,9 +119,9 @@ class ProductoController extends Controller
                 'imagen.mimes' => 'La imagen debe ser un archivo .png, .jpg, .bmp, .jpeg, .webp'
             ]);
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/productos'), $filename);
-            $input["imagen"] = $filename;
+            $file->store('public/images/productos');
+            $hashNameImagen = $file->hashName();
+            $input["imagen"] = $hashNameImagen;
         }
 
         //Actualiza la nueva instancia de la Entidad Producto con los nuevos datos ingresados en los inputs

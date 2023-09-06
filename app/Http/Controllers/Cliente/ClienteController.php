@@ -23,39 +23,48 @@ class ClienteController extends Controller
         return view('admin.usuarios.list', compact('usuarios'));
     }
 
-    /* ---- API ---- */
-    public function register(Request $request){
-        //Valida los datos ingresados
-        $validator = Validator::make($request->all(),[
-            'dni' => 'required|max:8',
-            'telefono' => 'required',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed'
-        ],[
-            'name.required' => 'El campo nombre es obligatorio',
-            'email.required' => 'El campo correo es obligatorio',
-            'password.required' => 'El campo contraseña es obligatorio'
-        ]);
 
-        //Si esta mal ingresado algún dato, devuleve un json con el error
-        if($validator->fails()){
-            return response()->json($validator->errors());
+    # API
+
+    public function register(Request $request){
+
+        try {
+            //Valida los datos ingresados
+            $validator = Validator::make($request->all(),[
+                'dni' => 'required|max:8',
+                'telefono' => 'required',
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8|confirmed'
+            ],[
+                'name.required' => 'El campo nombre es obligatorio',
+                'email.required' => 'El campo correo es obligatorio',
+                'password.required' => 'El campo contraseña es obligatorio'
+            ]);
+
+            //Si esta mal ingresado algún dato, devuleve un json con el error
+            if($validator->fails()){
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+
+            //Crea el usuario para guardar en la tabla USUARIO
+            $user = User::create([
+                'dni' => $request->dni,
+                'telefono' => $request->telefono,
+                'tipo' => 0,
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'estado' => 1
+            ]);
+
+            //Devuelve el usuario creado, el token y un mensaje
+            return response()->json(['message' => 'Registro con éxito', 'data' => $user], 201);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error en el servidor'], 500);
         }
 
-        //Crea el usuario para guardar en la tabla USUARIO
-        $user = User::create([
-            'dni' => $request->dni,
-            'telefono' => $request->telefono,
-            'tipo' => 0,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'estado' => 1
-        ]);
-
-        //Devuelve el usuario creado, el token y un mensaje
-        return response()->json(['message' => 'Registro con éxito!!','data' => $user ]);
     }
 
     public function update(Request $request, $id){
@@ -70,8 +79,15 @@ class ClienteController extends Controller
             'email.required' => 'El campo correo es obligatorio',
         ]);
 
+        //En caso de que haya errores por la validación, retorna un json con los errores
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+
         //Obtiene todos los valores ingresados en los inputs
         $input = $request->all();
+
         $user=User::find($id);
         $email = $user->email;
         if($email != $request->email){
@@ -80,17 +96,13 @@ class ClienteController extends Controller
             ]);
         }
 
-        //En caso de que haya errores por la validación, retorna un json con los errores
-        if($validator->fails()){
-            return response()->json($validator->errors());
-        }
-
         //Encripta la nueva contraseña
         $input["password"] = Hash::make($request->password);
 
         //Actualiza el usuario en la BD
         $user->update($input);
-        return response()->json(['message' => 'Actualizado con éxito!!']);
+
+        return response()->json(['message' => 'Usuario actualizado exitosamente']);
 
     }
 
@@ -133,21 +145,20 @@ class ClienteController extends Controller
     public function login(Request $request){
         //Verifica si las credenciales ingresadas existe en la tabla USUARIo
         if(!Auth::attempt(['email' => $request->email, 'password' => $request->password, 'tipo' => 0])){
-            return response()->json(['message' => 'Correo y/o contraseña incorrectos!!'], 201);
+            return response()->json(['error' => 'Correo y/o contraseña incorrectos'], 401);
         }
 
         //Obtiene el registro del usuario
-        $user = User::where('email', $request['email'])->firstOrFail();
+        $user = Auth::user();
         //crea un token para el usuario
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()
-            ->json([
-                'message' => 'Success',
-                'token' => $token,
-                'token_type' => 'Bearer',
-                'user' => $user,
-            ]);
+        return response()->json([
+            'message' => 'Autenticacion exitosa',
+            'token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user,
+        ]);
 
     }
 
@@ -156,7 +167,7 @@ class ClienteController extends Controller
         //Elimina el token de inicio de sesipon
         auth()->user()->tokens()->delete();
         return[
-            'message' => 'Ha cerrado sesión'
+            'message' => 'Ha cerrado sesión exitosamente'
         ];
     }
 

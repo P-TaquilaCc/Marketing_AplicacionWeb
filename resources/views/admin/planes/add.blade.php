@@ -16,9 +16,6 @@
                             @enderror
                         </div>
 
-                    </div>
-
-                    <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="" class="form-label" > Precio Mensual</label>
 
@@ -33,9 +30,11 @@
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
+                    </div>
+
+                    <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="" class="form-label" > Porcentaje Comisión</label>
-
                             <div class="input-group">
                                 <input id="porcentaje" name="porcentaje" type="text" class="form-control" tabindex ="1">
                                 <div class="input-group-append">
@@ -45,6 +44,14 @@
                             @error('porcentaje')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="" class="form-label" > Plan por Defecto</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="porDefecto" value="1" name="porDefecto">
+                                <label class="form-check-label" for="porDefecto">Si</label>
+                            </div>
                         </div>
                     </div>
                 </div>

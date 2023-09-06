@@ -38,11 +38,7 @@
             @foreach ($negocios as $negocio)
                 <tr class="body-table">
                     <td>
-                        @if($negocio->imagen != null)
-                            <img class="img-responsive" src="{{ url('storage/uploads/negocio').'/'. $negocio->imagen }}" width="100" height="80" alt="Imagen negocio">
-                        @else
-                            <img class="img-responsive" src="../../img/no-image.jpg" width="100" height="80" alt="Imagen negocio">
-                        @endif
+                        <img src="{{ asset('storage/images/negocio/'. $negocio->imagen) }}" width="100" height="80" alt="Imagen negocio">
                     </td>
                     <td>{{ $negocio->nombre }}</td>
                     <td>{{ $negocio->category->nombre }}</td>

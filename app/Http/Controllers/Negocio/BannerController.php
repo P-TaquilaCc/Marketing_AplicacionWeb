@@ -45,9 +45,9 @@ class BannerController extends Controller
         //Valida si una imagen fue ingresada para poder guardar en la carpeta correspondiente
         if($request->hasFile('imagen')){
             $file = $request->file('imagen');
-            $filename= date('YmdHi').$file->getClientOriginalName();
-            $file-> move(public_path('storage/uploads/banners'), $filename);
-            $banner->imagen = $filename;
+            $file->store('public/images/banners');
+            $hashNameImagen = $file->hashName();
+            $banner->imagen = $hashNameImagen;
         }
 
         $banner->estado = $input['estado'];
@@ -85,9 +85,9 @@ class BannerController extends Controller
                 'imagen.mimes' => 'La imagen debe ser un archivo .png, .jpg, .bmp, .jpeg, .webp'
             ]);
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/banners'), $filename);
-            $input["imagen"] = $filename;
+            $file->store('public/images/negocio');
+            $hashNameImagen = $file->hashName();
+            $input["imagen"] = $hashNameImagen;
         }
 
         $banner->update($input);

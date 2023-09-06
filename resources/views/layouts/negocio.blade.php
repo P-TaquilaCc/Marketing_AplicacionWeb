@@ -7,8 +7,8 @@
 
     <title>MT-Technology</title>
 
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../css/custom.min.css">
+    <link href=" {{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href=" {{ URL::asset('css/custom.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
@@ -29,9 +29,9 @@
                         <div class="profile clearfix">
                             <div class="profile_pic">
                             @if(session('fotoPerfil') != null)
-                                <img src="{{ url('storage/uploads/negocioPerfil').'/'. session('fotoPerfil') }}" alt="..." class="img-circle profile_img">
+                                <img src="{{ asset('storage/images/negocioPerfil').'/'. session('fotoPerfil') }}" alt="..." class="img-circle profile_img">
                             @else
-                                <img src="../../img/foto-perfil.png" alt="..." class="img-circle profile_img">
+                                <img src="{{ asset('img/foto-perfil.png') }}" alt="Foto de Perfil" class="img-circle profile_img">
                             @endif
                             </div>
                             <div class="profile_info">
@@ -75,9 +75,9 @@
                                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                                         @if(session('fotoPerfil') != null)
-                                            <img src="{{ url('storage/uploads/negocioPerfil').'/'. session('fotoPerfil') }}" alt="">{{session('nombre')}}
+                                            <img src="{{ asset('storage/images/negocioPerfil').'/'. session('fotoPerfil') }}" alt="">{{session('nombre')}}
                                         @else
-                                            <img src="../../img/foto-perfil.png" alt="">{{session('nombre')}}
+                                            <img src="{{ asset('img/foto-perfil.png') }}" alt="Foto de Perfil">{{session('nombre')}}
                                         @endif
 
                                     </a>
@@ -140,12 +140,12 @@
             </div>
         </div>
 
-        <!-- jQuery -->
-        <script src="../../js/jquery.min.js"></script>
+         <!-- jQuery -->
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
         <!-- Bootstrap -->
-        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
         <!-- Custom Theme Scripts -->
-        <script src="../../js/custom.min.js"></script>
+        <script src="{{ asset('js/custom.min.js') }}"></script>
 
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 

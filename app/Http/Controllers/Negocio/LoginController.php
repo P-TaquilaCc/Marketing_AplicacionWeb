@@ -118,10 +118,9 @@ class LoginController extends Controller
             ]);
 
             $fileProfile = $request->file('fotoPerfil');
-            $filenameProfile = date('YmdHi').$fileProfile->getClientOriginalName();
-            $fileProfile->move(public_path('storage/uploads/negocioPerfil'), $filenameProfile);
-
-            $input["fotoPerfil"] = $filenameProfile;
+            $fileProfile->store('public/images/negocioPerfil');
+            $hashNameImagen = $fileProfile->hashName();
+            $input["fotoPerfil"] = $hashNameImagen;
         }
 
         //Se actualiza en la Session en nombre del usuario

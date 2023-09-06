@@ -40,14 +40,27 @@ class NegocioController extends Controller
         //Obtiene todos los campos ingresados por el usuario Administrador
         $input = $request->all();
 
+        //Crea una nueva instancia del modelo NEGOCIO
+        $negocio = new Negocio;
+
         //Valida los campos necesarios que el usuario Administrador debe ingresar
         //En caso el tipo de NEGOCIO sea EMPRESARIO ingresa a esta sección del código
         if($input['tipo'] == 0){
             $request->validate([
                 'tipoplan' => 'required',
-                'RUC' => 'required',
+                'RUC' => [
+                    'required',
+                    'string',
+                    'size:11',
+                    'regex:/^[0-9]{11}$/',
+                ],
                 'razonSocial' => 'required',
-                'DNI' => 'required',
+                'DNI' => [
+                    'required',
+                    'string',
+                    'size:8',
+                    'regex:/^[0-9]{8}$/',
+                ],
                 'representanteLegal' => 'required',
                 'nombre' => 'required',
                 'telefono' => 'required',
@@ -63,8 +76,12 @@ class NegocioController extends Controller
             [
                 'tipoplan.required' => 'El campo tipo de plan es obligatorio',
                 'RUC.required' => 'El campo RUC es obligatorio',
+                'RUC.regex' => 'El campo RUC debe ser un número entero',
+                'RUC.size' => 'El campo RUC debe tener exactamente 11 dígitos',
                 'razonSocial.required' => 'El campo razón Social es obligatorio',
                 'DNI.required' => 'El campo DNI es obligatorio',
+                'DNI.regex' => 'Ingrese un DNI válido',
+                'DNI.size' => 'El campo DNI debe tener exactamente 8 dígitos',
                 'representanteLegal.required' => 'El campo representante Legal es obligatorio',
                 'nombre.required' => 'El campo Nombre Comercial es obligatorio',
                 'telefono.required' => 'El campo telefono es obligatorio',
@@ -78,13 +95,20 @@ class NegocioController extends Controller
                 'longitud.required' => 'El campo longitud es obligatorio',
                 'imagen.mimes' => 'La imagen debe ser un archivo .png, .jpg, .bmp, .jpeg, .webp'
             ]);
+
+            $negocio->RUC = $input['RUC'];
+            $negocio->razonSocial = $input['razonSocial'];
         }
         //En caso de que el tipo de NEGOCIO sea EMPRENDEDOR, ingresa a esta sección del código
         else{
             $request->validate([
                 'tipoplan' => 'required',
-
-                'DNI' => 'required',
+                'DNI' => [
+                    'required',
+                    'string',
+                    'size:8',
+                    'regex:/^[0-9]{8}$/',
+                ],
                 'representanteLegal' => 'required',
                 'nombre' => 'required',
                 'telefono' => 'required',
@@ -99,8 +123,9 @@ class NegocioController extends Controller
             ],
             [
                 'tipoplan.required' => 'El campo tipo de plan es obligatorio',
-
                 'DNI.required' => 'El campo DNI es obligatorio',
+                'DNI.regex' => 'Ingrese un DNI válido',
+                'DNI.size' => 'El campo DNI debe tener exactamente 8 dígitos',
                 'representanteLegal.required' => 'El campo representante Legal es obligatorio',
                 'nombre.required' => 'El campo Nombre Comercial es obligatorio',
                 'telefono.required' => 'El campo telefono es obligatorio',
@@ -116,14 +141,9 @@ class NegocioController extends Controller
             ]);
         }
 
-        //Crea una nueva instancia del modelo NEGOCIO
-        $negocio = new Negocio;
-
         $negocio->idCategoria = $input['idCategoria'];
         $negocio->idPlan = $input['tipoplan'];
         $negocio->tipo = $input['tipo'];
-        $negocio->RUC = $input['RUC'];
-        $negocio->razonSocial = $input['razonSocial'];
         $negocio->DNI = $input['DNI'];
         $negocio->representanteLegal = $input['representanteLegal'];
         $negocio->nombre = $input['nombre'];
@@ -134,9 +154,9 @@ class NegocioController extends Controller
         //Verifica si se ha cargado alguna imagen
         if($request->hasFile('imagen')){
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/negocio'), $filename);
-            $negocio->imagen = $filename;
+            $file->store('public/images/negocio');
+            $hashNameImagen = $file->hashName();
+            $negocio->imagen = $hashNameImagen;
         }
 
         $negocio->password = Hash::make("123456");
@@ -177,9 +197,19 @@ class NegocioController extends Controller
         if($input['tipo'] == 0){
             $request->validate([
                 'idPlan' => 'required',
-                'RUC' => 'required',
+                'RUC' => [
+                    'required',
+                    'string',
+                    'size:11',
+                    'regex:/^[0-9]{11}$/',
+                ],
                 'razonSocial' => 'required',
-                'DNI' => 'required',
+                'DNI' => [
+                    'required',
+                    'string',
+                    'size:8',
+                    'regex:/^[0-9]{8}$/',
+                ],
                 'representanteLegal' => 'required',
                 'nombre' => 'required',
                 'telefono' => 'required',
@@ -194,8 +224,12 @@ class NegocioController extends Controller
             [
                 'idPlan.required' => 'El campo tipo de plan es obligatorio',
                 'RUC.required' => 'El campo RUC es obligatorio',
+                'RUC.regex' => 'El campo RUC debe ser un número entero',
+                'RUC.size' => 'El campo RUC debe tener exactamente 11 dígitos',
                 'razonSocial.required' => 'El campo razón Social es obligatorio',
                 'DNI.required' => 'El campo DNI es obligatorio',
+                'DNI.regex' => 'Ingrese un DNI válido',
+                'DNI.size' => 'El campo DNI debe tener exactamente 8 dígitos',
                 'representanteLegal.required' => 'El campo representante Legal es obligatorio',
                 'nombre.required' => 'El campo Nombre Comercial es obligatorio',
                 'telefono.required' => 'El campo telefono es obligatorio',
@@ -212,7 +246,12 @@ class NegocioController extends Controller
         else{
             $request->validate([
                 'idPlan' => 'required',
-                'DNI' => 'required',
+                'DNI' => [
+                    'required',
+                    'string',
+                    'size:8',
+                    'regex:/^[0-9]{8}$/',
+                ],
                 'representanteLegal' => 'required',
                 'nombre' => 'required',
                 'telefono' => 'required',
@@ -226,8 +265,9 @@ class NegocioController extends Controller
             ],
             [
                 'idPlan.required' => 'El campo tipo de plan es obligatorio',
-
                 'DNI.required' => 'El campo DNI es obligatorio',
+                'DNI.regex' => 'Ingrese un DNI válido',
+                'DNI.size' => 'El campo DNI debe tener exactamente 8 dígitos',
                 'representanteLegal.required' => 'El campo representante Legal es obligatorio',
                 'nombre.required' => 'El campo Nombre Comercial es obligatorio',
                 'telefono.required' => 'El campo telefono es obligatorio',
@@ -239,6 +279,9 @@ class NegocioController extends Controller
                 'latitud.required' => 'El campo latitud es obligatorio',
                 'longitud.required' => 'El campo longitud es obligatorio',
             ]);
+
+            $input["RUC"] = NULL;
+            $input["razonSocial"] = NULL;
         }
 
         //Consulta a la BD el registro que se va a editar mediante el ID del NEGOCIO
@@ -253,9 +296,9 @@ class NegocioController extends Controller
                 'imagen.mimes' => 'La imagen debe ser un archivo .png, .jpg, .bmp, .jpeg, .webp'
             ]);
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/negocio'), $filename);
-            $input["imagen"] = $filename;
+            $file->store('public/images/negocio');
+            $hashNameImagen = $file->hashName();
+            $input["imagen"] = $hashNameImagen;
         }
 
         //Se realiza la modificación del registro
@@ -281,36 +324,80 @@ class NegocioController extends Controller
         return back()->with('delete','Negocio eliminado con éxito');
     }
 
-    //API
-    //Listar todo los negocios
+    # API
+
+    //Listar todo los negocios para la APP
     public function index(){
+
+        try {
+            $negocios = Negocio::all()->where('estado', 1);
+            return response()->json($negocios);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error en el servidor'], 500);
+        }
+
+    }
+
+
+    //Listar todo los negocios para la Landing page
+    public function listNegocios(){
+
         try {
 
-            //Obtiene todo los negocios
-            $negocio = Negocio::all()->where('estado',1);
-            return response()->json($negocio);
+            $negocios = Negocio::all()->where('estado', 1);
+            if ($negocios->isEmpty()) {
+                return response()->json(['error' => 'No se encontraron negocios activos'], 404);
+            }
 
-        } catch (\Throwable $e) {
-            report($e);
-            return response()->json([
-                'msg' => 'error',
-                'error' => 'Error al obtener el negocio'
-            ], 500);
+            $negociosConURL = $negocios->map(function ($negocio) {
+                $negocio->imagenUrl = asset('storage/images/negocio') . '/' . $negocio->imagen;
+                return $negocio;
+            });
+
+            return response()->json(['negocios' => $negociosConURL]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error en el servidor'], 500);
         }
+
     }
 
     //Guardar Negocio
     public function store(Request $request){
-        //Obtiene todo los valores ingresados en los inputs
-        $input = $request->all();
 
-        //Crea una nueva instancia del modelo NEGOCIO
-        $negocio = new Negocio;
-        if($input['tipo'] == 0){
+        try {
+            //Obtiene todo los valores ingresados en los inputs
+            $input = $request->all();
+            $RUC = $input['RUC'];
+            $DNI = $input['DNI'];
+            $correo = $input['correo'];
+
+            if (strlen($RUC) !== 10 || !ctype_digit($RUC)) {
+                return response()->json(['error' => 'El RUC debe contener exactamente 10 dígitos numéricos.'], 400);
+            }
+
+            if (strlen($DNI) !== 8 || !ctype_digit($DNI)) {
+                return response()->json(['error' => 'El DNI debe contener exactamente 8 dígitos numéricos.'], 400);
+            }
+
+            if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+                return response()->json(['error' => 'El correo electrónico no es válido.'], 400);
+            }
+
+            $negocio = new Negocio;
+            $imagen = $request->file('image');
+            $imagen->store('public/images/negocio');
+            $hashNameImagen = $imagen->hashName();
+
+            if($input['tipo'] == 0){
+                $negocio->RUC = $input['RUC'];
+                $negocio->razonSocial = $input['razonSocial'];
+            }
+
+            $idPlan = Plan::where('porDefecto', 1)->value('id');
             $negocio->idCategoria = $input['idCategoria'];
+            $negocio->idPlan = $idPlan;
             $negocio->tipo = $input['tipo'];
-            $negocio->RUC = $input['RUC'];
-            $negocio->razonSocial = $input['razonSocial'];
             $negocio->DNI = $input['DNI'];
             $negocio->representanteLegal = $input['representanteLegal'];
             $negocio->nombre = $input['nombre'];
@@ -323,29 +410,16 @@ class NegocioController extends Controller
             $negocio->longitud = $input['longitud'];
             $negocio->estado = 1;
             $negocio->password = Hash::make("123456");
-        }else{
-            $negocio->idCategoria = $input['idCategoria'];
-            $negocio->tipo = $input['tipo'];
-            $negocio->DNI = $input['DNI'];
-            $negocio->representanteLegal = $input['representanteLegal'];
-            $negocio->nombre = $input['nombre'];
-            $negocio->telefono = $input['telefono'];
-            $negocio->direccion = $input['direccion'];
-            $negocio->correo = $input['correo'];
-            $negocio->hora_inicio = $input['hora_inicio'];
-            $negocio->hora_fin = $input['hora_fin'];
-            $negocio->latitud = $input['latitud'];
-            $negocio->longitud = $input['longitud'];
-            $negocio->estado = 1;
-            $negocio->password = Hash::make("123456");
+            $negocio->imagen = $hashNameImagen;
+
+
+            //Se guarda todos los valores ingresados en la instancia del modelo a la BD
+            $negocio->save();
+            return response()->json($negocio, 201);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error en el servidor'. $e], 500);
         }
 
-
-        //Se guarda todos los valores ingresados en la instancia del modelo a la BD
-        $negocio->save();
-        return response()->json(['data' => true]);
-
     }
-
-
 }

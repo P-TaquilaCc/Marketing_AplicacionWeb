@@ -51,7 +51,7 @@
                          <div class="form-group col-md-6">
                             <label for="fotoPerfil" class="form-label" > Foto de Perfil</label>
                             @if($data->fotoPerfil != null)
-                                <img class="mb-2" src="{{ url('storage/uploads/userPerfil').'/'. $data->fotoPerfil }}" alt="{{$data->fotoPerfil}}" width="150">
+                                <img class="mb-2" src="{{ asset('storage/images/userPerfil/'. $data->fotoPerfil) }}" alt="Foto de Perfil" width="150">
                                 <br>
                             @endif
                             <input type="file"  name="fotoPerfil">

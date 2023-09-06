@@ -27,6 +27,7 @@
                 <td>Nombre</td>
                 <td>Precio Mensual</td>
                 <td>Porcentaje Comisión</td>
+                <td>Estado</td>
                 <td>Controles</td>
             </tr>
         </thead>
@@ -36,6 +37,11 @@
                     <td>{{ $plan ->nombre }}</td>
                     <td>S/ {{ number_format($plan ->precioMensual, 2, '.', ' ') }}</td>
                     <td>{{ $plan ->porcentaje }}%</td>
+                    <td>
+                        @if ($plan ->porDefecto == 1)
+                            <span class="badge badge-success">Por defecto</span>
+                        @endif
+                    </td>
                     <td>
                         <a type="button" href="{{ route('admin.plan.edit', $plan->id) }}" class="btn btn-success" style="border-radius: 50%" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-pen"></i></a>
 

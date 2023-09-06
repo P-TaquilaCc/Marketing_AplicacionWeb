@@ -46,9 +46,9 @@ class CategoriaController extends Controller
         //Verifica si se ha ingresado una imagen
         if($request->hasFile('imagen')){
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/categoriaNegocio'), $filename);
-            $categoria_negocio->imagen = $filename;
+            $file->store('public/images/categoriaNegocio');
+            $hashNameImagen = $file->hashName();
+            $categoria_negocio->imagen = $hashNameImagen;
         }
 
         $categoria_negocio->estado = $input['estado'];
@@ -96,10 +96,11 @@ class CategoriaController extends Controller
             [
                 'imagen.mimes' => 'La imagen debe ser un archivo .png'
             ]);
+
             $file = $request->file('imagen');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/categoriaNegocio'), $filename);
-            $input["imagen"] = $filename;
+            $file->store('public/images/categoriaNegocio');
+            $hashNameImagen = $file->hashName();
+            $input["imagen"] = $hashNameImagen;
         }
 
         //Actualiza la nueva instancia de la Entidad Categoría con los nuevos datos ingresados en los inputs
@@ -108,7 +109,6 @@ class CategoriaController extends Controller
         //Muestra la vista Categoría index con el mensaje de editado
         return redirect()->route('admin.categoria.index')
         ->with('success','Categoría editado con éxito');
-
 
     }
 
@@ -129,22 +129,23 @@ class CategoriaController extends Controller
     }
 
 
-    // API
+    #API
+
     // Lista toda las categorías de los negocios con estado Activo(1)
     public function index(){
 
         try {
-            //Obtiene los registros de las CATEGORIAS de los NEGOCIOS
-            $categoria_negocio = CategoriaNegocio::all()->where('estado',1);
+
+            $categoria_negocio = CategoriaNegocio::all()->where('estado', 1);
+            if ($categoria_negocio->isEmpty()) {
+                return response()->json(['message' => 'No se encontraron categorías de negocio'], 404);
+            }
+
             return response()->json($categoria_negocio);
 
-
-        } catch (\Throwable $e) {
-            report($e);
-            return response()->json([
-                'msg' => 'error',
-                'error' => 'Error al obtener categorías'
-            ], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error en el servidor'], 500);
         }
+
     }
 }

@@ -94,10 +94,9 @@ class AdminController extends Controller
             ]);
 
             $file = $request->file('fotoPerfil');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('storage/uploads/userPerfil'), $filename);
-
-            $input["fotoPerfil"] = $filename;
+            $file->store('public/images/userPerfil');
+            $hashNameImagen = $file->hashName();
+            $input["fotoPerfil"] = $hashNameImagen;
         }
 
         //Se actualiza en la Session en nombre del usuario

@@ -87,7 +87,7 @@
 
                         <div class="form-group col-md-6">
                             <label for="imagen" class="form-label" > Imagen</label>
-                            <img src="{{ url('storage/uploads/negocio').'/'. $data->imagen }}" alt="{{$data->imagen}}" width="150">
+                            <img src="{{ asset('storage/images/negocio').'/'. $data->imagen }}" alt="Logo del negocio" width="150">
                             <br>
                             <input type="file"  name="imagen">
                         </div>
@@ -95,7 +95,7 @@
                         <div class="form-group col-md-6">
                             <label for="fotoPerfil" class="form-label" > Foto de Perfil</label>
                             @if($data->fotoPerfil != null)
-                                <img class="mb-2" src="{{ url('storage/uploads/negocioPerfil').'/'. $data->fotoPerfil }}" alt="{{$data->fotoPerfil}}" width="150">
+                                <img class="mb-2" src="{{ asset('storage/images/negocioPerfil').'/'. $data->fotoPerfil }}" alt="Foto de perfil" width="150">
                                 <br>
                             @endif
                             <input type="file"  name="fotoPerfil">
